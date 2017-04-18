@@ -26,7 +26,6 @@ public class Profile extends Controller {
             throw new NullPointerException("사용자를 찾을 수 없습니다.");
         }
         req.setAttribute("user", user);
-        RequestDispatcher rd = req.getRequestDispatcher("/user/profile.jsp");
-        rd.forward(req, resp);
+        this.forward(req, resp, "/user/profile.jsp");
     }
 }

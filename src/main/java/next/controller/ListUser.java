@@ -25,7 +25,6 @@ public class ListUser extends Controller {
 
         req.setAttribute("users", DataBase.findAll());
 
-        RequestDispatcher rd = req.getRequestDispatcher("/user/list.jsp");
-        rd.forward(req, resp);
+        this.forward(req, resp, "/user/list.jsp");
     }
 }

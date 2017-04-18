@@ -23,7 +23,6 @@ public class Home extends Controller {
     public void exec(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         log.info("home");
         req.setAttribute("users", DataBase.findAll());
-        RequestDispatcher rd = req.getRequestDispatcher("index.jsp");
-        rd.forward(req, resp);
+        this.forward(req, resp, "index.jsp");
     }
 }

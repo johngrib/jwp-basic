@@ -25,8 +25,7 @@ public class Login extends Controller {
         User user = DataBase.findUserById(userId);
         if (user == null) {
             req.setAttribute("loginFailed", true);
-            RequestDispatcher rd = req.getRequestDispatcher("/user/login.jsp");
-            rd.forward(req, resp);
+            this.forward(req, resp, "/user/login.jsp");
             return;
         }
 
@@ -36,8 +35,7 @@ public class Login extends Controller {
             resp.sendRedirect("/");
         } else {
             req.setAttribute("loginFailed", true);
-            RequestDispatcher rd = req.getRequestDispatcher("/user/login.jsp");
-            rd.forward(req, resp);
+            this.forward(req, resp, "/user/login.jsp");
             return;
         }
     }

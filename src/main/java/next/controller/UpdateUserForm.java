@@ -25,7 +25,6 @@ public class UpdateUserForm extends Controller {
             throw new IllegalStateException("다른 사용자의 정보를 수정할 수 없습니다.");
         }
         req.setAttribute("user", user);
-        RequestDispatcher rd = req.getRequestDispatcher("/user/updateForm.jsp");
-        rd.forward(req, resp);
+        this.forward(req, resp, "/user/updateForm.jsp");
     }
 }
