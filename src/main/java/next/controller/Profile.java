@@ -2,21 +2,24 @@ package next.controller;
 
 import core.db.DataBase;
 import next.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import javax.servlet.http.HttpSession;
 
-@WebServlet("/users/profile")
-public class ProfileController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+/**
+ * Created by johngrib on 2017. 4. 18..
+ */
+@annotation.Controller(name = "/users/profile")
+public class Profile extends Controller {
+
+    private static final Logger log = LoggerFactory.getLogger(Profile.class);
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void exec(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String userId = req.getParameter("userId");
         User user = DataBase.findUserById(userId);
         if (user == null) {
