@@ -14,7 +14,7 @@ public class ForwardController implements Controller {
     }
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        return forwardUrl;
+    public ResponseResolve execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        return new ResponseResolve(req, resp).view(forwardUrl);
     }
 }
