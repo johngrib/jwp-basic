@@ -11,6 +11,8 @@ import next.model.Answer;
 import next.model.Question;
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ShowController extends AbstractController {
     private QuestionDao questionDao = new QuestionDao();
@@ -18,12 +20,16 @@ public class ShowController extends AbstractController {
     private Question question;
     private List<Answer> answers;
 
+    private static final Logger log = LoggerFactory.getLogger(ShowController.class);
+
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse response) throws Exception {
         Long questionId = Long.parseLong(req.getParameter("questionId"));
 
         question = questionDao.findById(questionId);
         answers = answerDao.findAllByQuestionId(questionId);
+
+        log.debug("answers : {}", answers);
 
         ModelAndView mav = jspView("/qna/show.jsp");
         mav.addObject("question", question);
