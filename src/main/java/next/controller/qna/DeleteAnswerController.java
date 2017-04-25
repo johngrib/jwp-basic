@@ -15,11 +15,17 @@ public class DeleteAnswerController extends AbstractController {
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long answerId = Long.parseLong(request.getParameter("answerId"));
+        Long questionId = Long.parseLong(request.getParameter("questionId"));
 
         ModelAndView mav = jsonView();
         try {
             answerDao.delete(answerId);
+
+            final Integer answerCount = answerDao.findAllByQuestionId(questionId).size();
+
             mav.addObject("result", Result.ok());
+            mav.addObject("answerCount", answerCount);
+            mav.addObject("answerId", answerId);
         } catch (DataAccessException e) {
             mav.addObject("result", Result.fail(e.getMessage()));
         }
