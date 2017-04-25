@@ -13,10 +13,9 @@ import core.jdbc.PreparedStatementCreator;
 import core.jdbc.RowMapper;
 import next.model.Question;
 
-public class QuestionDao {
+public class QuestionDao extends Dao {
     public Question insert(Question question) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        String sql = "INSERT INTO QUESTIONS " + 
+        String sql = "INSERT INTO QUESTIONS " +
                 "(writer, title, contents, createdDate) " + 
                 " VALUES (?, ?, ?, ?)";
         PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -32,12 +31,11 @@ public class QuestionDao {
         };
 
         KeyHolder keyHolder = new KeyHolder();
-        jdbcTemplate.update(psc, keyHolder);
+        getJdbcTemplate().update(psc, keyHolder);
         return findById(keyHolder.getId());
     }
 
     public Question update(Question question) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "UPDATE QUESTIONS " +
                 "SET title = ?, contents = ?, createdDate = ? " +
                 "WHERE questionId = ?";
@@ -54,12 +52,11 @@ public class QuestionDao {
         };
 
         KeyHolder keyHolder = new KeyHolder();
-        jdbcTemplate.update(psc, keyHolder);
+        getJdbcTemplate().update(psc, keyHolder);
         return findById(keyHolder.getId());
     }
 
     public List<Question> findAll() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT questionId, writer, title, createdDate, countOfAnswer FROM QUESTIONS "
                 + "order by questionId desc";
 
@@ -72,7 +69,7 @@ public class QuestionDao {
 
         };
 
-        return jdbcTemplate.query(sql, rm);
+        return getJdbcTemplate().query(sql, rm);
     }
 
     public Question findById(long questionId) {
@@ -88,6 +85,6 @@ public class QuestionDao {
             }
         };
 
-        return jdbcTemplate.queryForObject(sql, rm, questionId);
+        return getJdbcTemplate().queryForObject(sql, rm, questionId);
     }
 }

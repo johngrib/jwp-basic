@@ -8,14 +8,13 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import next.model.Answer;
-import core.jdbc.JdbcTemplate;
 import core.jdbc.KeyHolder;
 import core.jdbc.PreparedStatementCreator;
 import core.jdbc.RowMapper;
 
-public class AnswerDao {
+public class AnswerDao extends Dao{
+
     public Answer insert(Answer answer) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)";
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -30,12 +29,11 @@ public class AnswerDao {
         };
 
         KeyHolder keyHolder = new KeyHolder();
-        jdbcTemplate.update(psc, keyHolder);
+        getJdbcTemplate().update(psc, keyHolder);
         return findById(keyHolder.getId());
     }
 
     public Answer findById(long answerId) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT answerId, writer, contents, createdDate, questionId FROM ANSWERS WHERE answerId = ?";
 
         RowMapper<Answer> rm = new RowMapper<Answer>() {
@@ -46,11 +44,10 @@ public class AnswerDao {
             }
         };
 
-        return jdbcTemplate.queryForObject(sql, rm, answerId);
+        return getJdbcTemplate().queryForObject(sql, rm, answerId);
     }
 
     public List<Answer> findAllByQuestionId(long questionId) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT answerId, writer, contents, createdDate FROM ANSWERS WHERE questionId = ? "
                 + "order by answerId desc";
 
@@ -62,12 +59,11 @@ public class AnswerDao {
             }
         };
 
-        return jdbcTemplate.query(sql, rm, questionId);
+        return getJdbcTemplate().query(sql, rm, questionId);
     }
 
     public void delete(Long answerId) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "DELETE FROM ANSWERS WHERE answerId = ?";
-        jdbcTemplate.update(sql, answerId);
+        getJdbcTemplate().update(sql, answerId);
     }
 }
