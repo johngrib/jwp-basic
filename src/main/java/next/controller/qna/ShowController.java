@@ -17,8 +17,6 @@ import org.slf4j.LoggerFactory;
 public class ShowController extends AbstractController {
     private QuestionDao questionDao = new QuestionDao();
     private AnswerDao answerDao = new AnswerDao();
-    private Question question;
-    private List<Answer> answers;
 
     private static final Logger log = LoggerFactory.getLogger(ShowController.class);
 
@@ -26,8 +24,8 @@ public class ShowController extends AbstractController {
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse response) throws Exception {
         Long questionId = Long.parseLong(req.getParameter("questionId"));
 
-        question = questionDao.findById(questionId);
-        answers = answerDao.findAllByQuestionId(questionId);
+        final Question question = questionDao.findById(questionId);
+        final List<Answer> answers = answerDao.findAllByQuestionId(questionId);
 
         log.debug("answers : {}", answers);
 
