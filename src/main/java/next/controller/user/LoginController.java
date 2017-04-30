@@ -16,8 +16,13 @@ import core.mvc.ModelAndView;
 public class LoginController extends AbstractController {
     private UserDao userDao = UserDao.getInstance();
 
+    @Override
+    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        return null;
+    }
+
     @RequestMapping(value = "/users/login", method = RequestMethod.POST)
-    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String userId = request.getParameter("userId");
         String password = request.getParameter("password");
         User user = userDao.findByUserId(userId);
@@ -34,4 +39,12 @@ public class LoginController extends AbstractController {
             throw new IllegalStateException("비밀번호가 틀립니다.");
         }
     }
+
+    @RequestMapping("/users/logout")
+    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        session.removeAttribute("user");
+        return jspView("redirect:/");
+    }
+
 }

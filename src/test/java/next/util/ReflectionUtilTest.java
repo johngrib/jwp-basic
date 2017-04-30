@@ -1,24 +1,14 @@
 package next.util;
 
 import core.annotation.Controller;
-import core.annotation.RequestMapping;
-import core.mvc.ControllerData;
-import core.mvc.ControllerData;
 import next.controller.HomeController;
 import next.controller.qna.*;
-import next.controller.user.CreateUserController;
-import next.controller.user.ListUserController;
-import next.controller.user.LogoutController;
+import next.controller.user.LoginController;
+import next.controller.user.UserController;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -40,8 +30,7 @@ public class ReflectionUtilTest {
         assertTrue(classes.contains(AddAnswerController.class));
         assertTrue(classes.contains(ApiDeleteQuestionController.class));
 
-        assertTrue(classes.contains(CreateUserController.class));
-        assertTrue(classes.contains(ListUserController.class));
+        assertTrue(classes.contains(UserController.class));
     }
 
     @Test
@@ -52,6 +41,6 @@ public class ReflectionUtilTest {
 
         assertTrue(controllers.contains(HomeController.class));
         assertTrue(controllers.contains(DeleteAnswerController.class));
-        assertTrue(controllers.contains(LogoutController.class));
+        assertTrue(controllers.contains(LoginController.class));
     }
 }
