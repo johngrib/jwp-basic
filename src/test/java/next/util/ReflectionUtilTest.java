@@ -27,8 +27,8 @@ public class ReflectionUtilTest {
         final List<Class<?>> classes = ReflectionUtil.getClassesInPackage("next.controller");
 
         assertTrue(classes.contains(HomeController.class));
-        assertTrue(classes.contains(AddAnswerController.class));
-        assertTrue(classes.contains(ApiDeleteQuestionController.class));
+        assertTrue(classes.contains(AnswerController.class));
+        assertTrue(classes.contains(QuestionController.class));
 
         assertTrue(classes.contains(UserController.class));
     }
@@ -40,7 +40,7 @@ public class ReflectionUtilTest {
         final List<Class<?>> controllers = ReflectionUtil.getAnnotatedClasses(classes, Controller.class);
 
         assertTrue(controllers.contains(HomeController.class));
-        assertTrue(controllers.contains(DeleteAnswerController.class));
+        assertTrue(controllers.contains(AnswerController.class));
         assertTrue(controllers.contains(LoginController.class));
     }
 }
