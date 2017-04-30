@@ -19,14 +19,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-@Controller
+@Controller("/qna")
 public class QuestionController extends AbstractController {
 
     private QnaService qnaService = QnaService.getInstance();
     private QuestionDao questionDao = QuestionDao.getInstance();
     private AnswerDao answerDao = AnswerDao.getInstance();
 
-    @RequestMapping("/qna/show")
+    @RequestMapping("/show")
     public ModelAndView show(HttpServletRequest req, HttpServletResponse response) throws Exception {
         long questionId = Long.parseLong(req.getParameter("questionId"));
 
@@ -39,7 +39,7 @@ public class QuestionController extends AbstractController {
         return mav;
     }
 
-    @RequestMapping("/qna/form")
+    @RequestMapping("/form")
     public ModelAndView form(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         if (!UserSessionUtils.isLogined(req.getSession())) {
             return jspView("redirect:/users/loginForm");
@@ -47,7 +47,7 @@ public class QuestionController extends AbstractController {
         return jspView("/qna/form.jsp");
     }
 
-    @RequestMapping(value = "/qna/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView create(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (!UserSessionUtils.isLogined(request.getSession())) {
             return jspView("redirect:/users/loginForm");
@@ -59,7 +59,7 @@ public class QuestionController extends AbstractController {
         return jspView("redirect:/");
     }
 
-    @RequestMapping(value = "/qna/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ModelAndView delete(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         if (!UserSessionUtils.isLogined(req.getSession())) {
             return jspView("redirect:/users/loginForm");
@@ -76,7 +76,7 @@ public class QuestionController extends AbstractController {
         }
     }
 
-    @RequestMapping("/qna/updateForm")
+    @RequestMapping("/updateForm")
     public ModelAndView updateForm(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         if (!UserSessionUtils.isLogined(req.getSession())) {
             return jspView("redirect:/users/loginForm");
@@ -90,7 +90,7 @@ public class QuestionController extends AbstractController {
         return jspView("/qna/update.jsp").addObject("question", question);
     }
 
-    @RequestMapping(value = "/qna/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView update(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         if (!UserSessionUtils.isLogined(req.getSession())) {
             return jspView("redirect:/users/loginForm");
@@ -107,26 +107,6 @@ public class QuestionController extends AbstractController {
         question.update(newQuestion);
         questionDao.update(question);
         return jspView("redirect:/");
-    }
-
-    @RequestMapping("/api/qna/list")
-    public ModelAndView apiList(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        return jsonView().addObject("questions", questionDao.findAll());
-    }
-
-    @RequestMapping(value = "/api/qna/deleteQuestion")
-    public ModelAndView apiDelete(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        if (!UserSessionUtils.isLogined(req.getSession())) {
-            return jsonView().addObject("result", Result.fail("Login is required"));
-        }
-
-        long questionId = Long.parseLong(req.getParameter("questionId"));
-        try {
-            qnaService.deleteQuestion(questionId, UserSessionUtils.getUserFromSession(req.getSession()));
-            return jsonView().addObject("result", Result.ok());
-        } catch (CannotDeleteException e) {
-            return jsonView().addObject("result", Result.fail(e.getMessage()));
-        }
     }
 
 }

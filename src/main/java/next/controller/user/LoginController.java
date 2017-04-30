@@ -12,16 +12,16 @@ import next.model.User;
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
 
-@Controller
+@Controller("/users")
 public class LoginController extends AbstractController {
     private UserDao userDao = UserDao.getInstance();
 
-    @RequestMapping("/users/loginForm")
+    @RequestMapping("/loginForm")
     public ModelAndView loginForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
         return jspView("/user/login.jsp");
     }
 
-    @RequestMapping(value = "/users/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String userId = request.getParameter("userId");
         String password = request.getParameter("password");
@@ -40,7 +40,7 @@ public class LoginController extends AbstractController {
         }
     }
 
-    @RequestMapping("/users/logout")
+    @RequestMapping("/logout")
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         session.removeAttribute("user");

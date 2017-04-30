@@ -21,8 +21,6 @@ public class ControllerMapping {
         this.annotation = annotation;
         this.pkg = pkg;
         initMapping();
-
-        System.out.println(urlMap);
     }
 
     public ControllerData get(String method, String url) {
@@ -36,6 +34,9 @@ public class ControllerMapping {
 
             for (Class<?> controller : controllers) {
 
+                final core.annotation.Controller canno = controller.getDeclaredAnnotation(core.annotation.Controller.class);
+                final String prefix = canno.value();
+
                 final Controller instance = (Controller) controller.newInstance();
 
                 for (final Method method : controller.getDeclaredMethods()) {
@@ -43,8 +44,9 @@ public class ControllerMapping {
                     final RequestMapping anno = method.getDeclaredAnnotation(RequestMapping.class);
 
                     if (anno != null && anno.value() != null) {
-                        final ControllerData controllerData = new ControllerData(instance, anno.value(), anno.method(), method);
-                        urlMap.put(anno.method() + anno.value(), controllerData);
+                        final String uri = prefix + anno.value();
+                        final ControllerData controllerData = new ControllerData(instance, uri, anno.method(), method);
+                        urlMap.put(anno.method() + uri, controllerData);
                     }
                 }
             }

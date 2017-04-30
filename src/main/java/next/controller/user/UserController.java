@@ -17,14 +17,14 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by johngrib on 2017. 4. 30..
  */
-@Controller
+@Controller("/users")
 public class UserController extends AbstractController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     private UserDao userDao = UserDao.getInstance();
 
-    @RequestMapping("/users")
+    @RequestMapping("")
     public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (!UserSessionUtils.isLogined(request.getSession())) {
             return jspView("redirect:/users/loginForm");
@@ -35,12 +35,12 @@ public class UserController extends AbstractController {
         return mav;
     }
 
-    @RequestMapping("/users/form")
+    @RequestMapping("/form")
     public ModelAndView form(HttpServletRequest request, HttpServletResponse response) throws Exception {
         return jspView("/user/form.jsp");
     }
 
-    @RequestMapping(value = "/users/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView create(HttpServletRequest request, HttpServletResponse response) throws Exception {
         User user = new User(request.getParameter("userId"), request.getParameter("password"),
                 request.getParameter("name"), request.getParameter("email"));
@@ -49,7 +49,7 @@ public class UserController extends AbstractController {
         return jspView("redirect:/");
     }
 
-    @RequestMapping(value = "/users/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView update(HttpServletRequest req, HttpServletResponse response) throws Exception {
         User user = userDao.findByUserId(req.getParameter("userId"));
 
@@ -64,7 +64,7 @@ public class UserController extends AbstractController {
         return jspView("redirect:/");
     }
 
-    @RequestMapping("/users/updateForm")
+    @RequestMapping("/updateForm")
     public ModelAndView updateForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
         User user = userDao.findByUserId(request.getParameter("userId"));
 
@@ -76,7 +76,7 @@ public class UserController extends AbstractController {
         return mav;
     }
 
-    @RequestMapping("/users/profile")
+    @RequestMapping("/profile")
     public ModelAndView profile(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String userId = request.getParameter("userId");
         ModelAndView mav = jspView("/user/profile.jsp");
