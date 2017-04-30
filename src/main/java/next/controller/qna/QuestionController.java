@@ -26,11 +26,6 @@ public class QuestionController extends AbstractController {
     private QuestionDao questionDao = QuestionDao.getInstance();
     private AnswerDao answerDao = AnswerDao.getInstance();
 
-    @Override
-    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        return null;
-    }
-
     @RequestMapping("/qna/show")
     public ModelAndView show(HttpServletRequest req, HttpServletResponse response) throws Exception {
         long questionId = Long.parseLong(req.getParameter("questionId"));

@@ -25,11 +25,6 @@ public class AnswerController extends AbstractController {
     private QuestionDao questionDao = QuestionDao.getInstance();
     private AnswerDao answerDao = AnswerDao.getInstance();
 
-    @Override
-    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        return null;
-    }
-
     @RequestMapping(value = "/api/qna/addAnswer", method = RequestMethod.POST)
     public ModelAndView add(HttpServletRequest req, HttpServletResponse response) throws Exception {
         if (!UserSessionUtils.isLogined(req.getSession())) {

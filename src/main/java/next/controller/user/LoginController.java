@@ -16,9 +16,9 @@ import core.mvc.ModelAndView;
 public class LoginController extends AbstractController {
     private UserDao userDao = UserDao.getInstance();
 
-    @Override
-    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        return null;
+    @RequestMapping("/users/loginForm")
+    public ModelAndView loginForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return jspView("/user/login.jsp");
     }
 
     @RequestMapping(value = "/users/login", method = RequestMethod.POST)

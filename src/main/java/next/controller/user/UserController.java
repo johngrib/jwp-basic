@@ -24,11 +24,6 @@ public class UserController extends AbstractController {
 
     private UserDao userDao = UserDao.getInstance();
 
-    @Override
-    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        return null;
-    }
-
     @RequestMapping("/users")
     public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (!UserSessionUtils.isLogined(request.getSession())) {
@@ -38,6 +33,11 @@ public class UserController extends AbstractController {
         ModelAndView mav = jspView("/user/list.jsp");
         mav.addObject("users", userDao.findAll());
         return mav;
+    }
+
+    @RequestMapping("/users/form")
+    public ModelAndView form(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return jspView("/user/form.jsp");
     }
 
     @RequestMapping(value = "/users/create", method = RequestMethod.POST)
