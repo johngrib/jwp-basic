@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import core.annotation.Controller;
 import core.annotation.RequestMapping;
+import core.annotation.RequestMethod;
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
 import next.CannotDeleteException;
@@ -15,7 +16,7 @@ import next.service.QnaService;
 public class DeleteQuestionController extends AbstractController {
     private QnaService qnaService = QnaService.getInstance();
 
-    @RequestMapping("/qna/delete")
+    @RequestMapping(value = "/qna/delete", method = RequestMethod.POST)
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         if (!UserSessionUtils.isLogined(req.getSession())) {
             return jspView("redirect:/users/loginForm");

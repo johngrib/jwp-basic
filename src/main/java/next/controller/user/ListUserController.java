@@ -14,7 +14,7 @@ import core.mvc.ModelAndView;
 public class ListUserController extends AbstractController {
     private UserDao userDao = UserDao.getInstance();
 
-    @RequestMapping("/users/loginForm")
+    @RequestMapping("/users")
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (!UserSessionUtils.isLogined(request.getSession())) {
             return jspView("redirect:/users/loginForm");

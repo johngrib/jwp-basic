@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import core.annotation.Controller;
 import core.annotation.RequestMapping;
+import core.annotation.RequestMethod;
 import next.dao.UserDao;
 import next.model.User;
 
@@ -20,7 +21,7 @@ public class CreateUserController extends AbstractController {
 
     private UserDao userDao = UserDao.getInstance();
 
-    @RequestMapping("/users/create")
+    @RequestMapping(value = "/users/create", method = RequestMethod.POST)
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         User user = new User(request.getParameter("userId"), request.getParameter("password"),
                 request.getParameter("name"), request.getParameter("email"));

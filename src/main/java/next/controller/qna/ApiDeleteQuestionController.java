@@ -17,7 +17,7 @@ public class ApiDeleteQuestionController extends AbstractController {
     private QnaService qnaService = QnaService.getInstance();
 
     @Override
-    @RequestMapping("/api/qna/deleteQuestion")
+    @RequestMapping(value = "/api/qna/deleteQuestion")
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         if (!UserSessionUtils.isLogined(req.getSession())) {
             return jsonView().addObject("result", Result.fail("Login is required"));

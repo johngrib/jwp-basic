@@ -17,11 +17,14 @@ public class DispatcherServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
 
     private RequestMapping rm;
+    private ControllerMapping controllerMap;
 
     @Override
     public void init() throws ServletException {
         rm = new RequestMapping();
         rm.initMapping();
+
+        controllerMap = new ControllerMapping(core.annotation.Controller.class, "next.controller");
     }
 
     @Override
@@ -30,6 +33,19 @@ public class DispatcherServlet extends HttpServlet {
         logger.debug("Method : {}, Request URI : {}", req.getMethod(), requestUri);
 
         Controller controller = rm.findController(req.getRequestURI());
+
+        if(controller == null) {
+            final ControllerData controllerData = controllerMap.get(req.getMethod(), req.getRequestURI());
+            final ModelAndView mav = controllerData.execute(req, resp);
+            final View view = mav.getView();
+            try {
+                view.render(mav.getModel(), req, resp);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
         ModelAndView mav;
         try {
             mav = controller.execute(req, resp);

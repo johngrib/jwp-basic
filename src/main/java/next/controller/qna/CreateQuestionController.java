@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import core.annotation.Controller;
 import core.annotation.RequestMapping;
+import core.annotation.RequestMethod;
 import next.controller.UserSessionUtils;
 import next.dao.QuestionDao;
 import next.model.Question;
@@ -16,7 +17,7 @@ import core.mvc.ModelAndView;
 public class CreateQuestionController extends AbstractController {
     private QuestionDao questionDao = QuestionDao.getInstance();
 
-    @RequestMapping("/qna/create")
+    @RequestMapping(value = "/qna/create", method = RequestMethod.POST)
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (!UserSessionUtils.isLogined(request.getSession())) {
             return jspView("redirect:/users/loginForm");
