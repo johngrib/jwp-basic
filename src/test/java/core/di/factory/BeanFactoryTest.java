@@ -10,10 +10,6 @@ import org.junit.Test;
 import org.reflections.Reflections;
 
 import com.google.common.collect.Sets;
-
-import core.annotation.Controller;
-import core.annotation.Repository;
-import core.annotation.Service;
 import core.di.factory.example.MyQnaService;
 import core.di.factory.example.QnaController;
 
@@ -24,10 +20,8 @@ public class BeanFactoryTest {
     @Before
     @SuppressWarnings("unchecked")
     public void setup() {
-        reflections = new Reflections("core.di.factory.example");
-        Set<Class<?>> preInstanticateClazz = getTypesAnnotatedWith(Controller.class, Service.class, Repository.class);
-        beanFactory = new BeanFactory(preInstanticateClazz);
-        beanFactory.initialize();
+        final Set<Class<?>> beanClasses = BeanFactoryUtils.findBeanClasses("core.di.factory.example");
+        beanFactory = new BeanFactory(beanClasses).initialize();
     }
 
     @Test

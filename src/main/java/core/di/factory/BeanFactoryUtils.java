@@ -3,22 +3,27 @@ package core.di.factory;
 import static org.reflections.ReflectionUtils.getAllConstructors;
 import static org.reflections.ReflectionUtils.withAnnotation;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.util.Set;
 
 import com.google.common.collect.Sets;
 
+import core.annotation.Controller;
 import core.annotation.Inject;
+import core.annotation.Repository;
+import core.annotation.Service;
+import org.reflections.Reflections;
 
 public class BeanFactoryUtils {
     /**
      * 인자로 전달하는 클래스의 생성자 중 @Inject 애노테이션이 설정되어 있는 생성자를 반환
-     * 
+     *
      * @Inject 애노테이션이 설정되어 있는 생성자는 클래스당 하나로 가정한다.
      * @param clazz
      * @return
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public static Constructor<?> getInjectedConstructor(Class<?> clazz) {
         Set<Constructor> injectedConstructors = getAllConstructors(clazz, withAnnotation(Inject.class));
         if (injectedConstructors.isEmpty()) {
@@ -30,7 +35,7 @@ public class BeanFactoryUtils {
     /**
      * 인자로 전달되는 클래스의 구현 클래스. 만약 인자로 전달되는 Class가 인터페이스가 아니면 전달되는 인자가 구현 클래스,
      * 인터페이스인 경우 BeanFactory가 관리하는 모든 클래스 중에 인터페이스를 구현하는 클래스를 찾아 반환
-     * 
+     *
      * @param injectedClazz
      * @param preInstanticateBeans
      * @return
@@ -48,5 +53,23 @@ public class BeanFactoryUtils {
         }
 
         throw new IllegalStateException(injectedClazz + "인터페이스를 구현하는 Bean이 존재하지 않는다.");
+    }
+
+    /**
+     * Controller, Service, Repository 어노테이션이 붙은 클래스를 찾아 집합으로 리턴한다.
+     * @param pkg
+     * @return
+     */
+    public static Set<Class<?>> findBeanClasses(final Object... pkg) {
+
+        final Reflections reflections = new Reflections(pkg);
+        final Class<? extends Annotation>[] annotations = new Class[]{
+                Controller.class, Service.class, Repository.class
+        };
+        final Set<Class<?>> beans = Sets.newHashSet();
+        for (Class<? extends Annotation> anno : annotations) {
+            beans.addAll(reflections.getTypesAnnotatedWith(anno));
+        }
+        return beans;
     }
 }
